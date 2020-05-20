@@ -3,9 +3,10 @@ package com.example.androidworkshop3.ui.main
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.androidworkshop3.R
 import kotlinx.android.extensions.LayoutContainer
+import kotlinx.android.synthetic.main.item.*
 
 class ItemAdapter : RecyclerView.Adapter<ItemViewHolder>() {
     var items = emptyList<Item>()
@@ -16,7 +17,7 @@ class ItemAdapter : RecyclerView.Adapter<ItemViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val itemView = layoutInflater.inflate(android.R.layout.simple_list_item_1, parent, false)
+        val itemView = layoutInflater.inflate(R.layout.item, parent, false)
         return ItemViewHolder(itemView)
     }
 
@@ -32,7 +33,7 @@ class ItemViewHolder(
     override val containerView: View
 ) : RecyclerView.ViewHolder(containerView), LayoutContainer {
     fun bind(item: Item) {
-        val textView = containerView.findViewById<TextView>(android.R.id.text1)
-        textView.text = item.primaryText
+        primaryText.text = item.primaryText
+        secondaryText.text = item.secondaryText
     }
 }
