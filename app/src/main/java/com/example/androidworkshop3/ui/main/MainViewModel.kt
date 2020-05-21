@@ -13,15 +13,15 @@ class MainViewModel : ViewModel() {
         refreshData()
     }
 
-    private fun refreshData() {
-        _data.value = List(Random.nextInt(10, 21)) { index ->
+    fun refreshData() {
+        _data.value = List(30) { index ->
             val id = index + 1
             Item(
                 id = id,
                 primaryText = "Item $id",
-                secondaryText = if(Random.nextBoolean()) "Secondary $id" else null,
-                isFeatured = Random.nextBoolean()
+                secondaryText = if (Random.nextBoolean()) "Secondary $id" else null,
+                isFeatured = id % 3 == 0
             )
-        }
+        }.filter { Random.nextInt(10) < 9 }
     }
 }
