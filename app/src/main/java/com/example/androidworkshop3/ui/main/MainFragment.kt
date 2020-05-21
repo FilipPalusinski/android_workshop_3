@@ -5,10 +5,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
-import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.*
 import com.example.androidworkshop3.R
 import kotlinx.android.synthetic.main.main_fragment.*
 
@@ -63,6 +60,7 @@ class MainFragment : Fragment(R.layout.main_fragment) {
             layoutManager = LinearLayoutManager(context)
             itemAnimator = DefaultItemAnimator().apply { supportsChangeAnimations = false }
             ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(this)
+            LinearSnapHelper().attachToRecyclerView(this)
         }
 
         viewModel.data.observe(viewLifecycleOwner) { itemAdapter.submitList(it) }
