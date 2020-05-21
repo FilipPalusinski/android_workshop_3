@@ -24,7 +24,7 @@ class MainFragment : Fragment(R.layout.main_fragment) {
             layoutManager = LinearLayoutManager(context)
         }
 
-        viewModel.data.observe(viewLifecycleOwner) { itemAdapter.items = it }
+        viewModel.data.observe(viewLifecycleOwner) { itemAdapter.submitList(it) }
     }
 
     override fun onDestroyView() {

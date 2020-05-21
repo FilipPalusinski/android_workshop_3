@@ -3,20 +3,17 @@ package com.example.androidworkshop3.ui.main
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidworkshop3.R
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item.*
 
-class ItemAdapter : RecyclerView.Adapter<ItemViewHolder>() {
-    var items = emptyList<Item>()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
+class ItemAdapter : ListAdapter<Item, ItemViewHolder>(DiffCallback) {
 
     override fun getItemViewType(position: Int): Int {
-        return if (items[position].isFeatured) R.layout.featured_item else R.layout.item
+        return if (getItem(position).isFeatured) R.layout.featured_item else R.layout.item
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -29,10 +26,19 @@ class ItemAdapter : RecyclerView.Adapter<ItemViewHolder>() {
         }
     }
 
-    override fun getItemCount() = items.size
-
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        holder.bind(items[position])
+        holder.bind(getItem(position))
+    }
+
+    object DiffCallback : DiffUtil.ItemCallback<Item>() {
+        override fun areItemsTheSame(oldItem: Item, newItem: Item): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: Item, newItem: Item): Boolean {
+            return oldItem == newItem
+        }
+
     }
 }
 
