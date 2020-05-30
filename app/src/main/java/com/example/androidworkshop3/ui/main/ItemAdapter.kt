@@ -10,7 +10,7 @@ import com.example.androidworkshop3.R
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item.*
 
-class ItemAdapter : ListAdapter<Item, ItemViewHolder>(DiffCallback) {
+class ItemAdapter(private val onLikeClick: (Item) -> Unit) : ListAdapter<Item, ItemViewHolder>(DiffCallback) {
 
     override fun getItemViewType(position: Int): Int {
         return if (getItem(position).isFeatured) R.layout.featured_item else R.layout.item
@@ -20,8 +20,8 @@ class ItemAdapter : ListAdapter<Item, ItemViewHolder>(DiffCallback) {
         val layoutInflater = LayoutInflater.from(parent.context)
         val itemView = layoutInflater.inflate(viewType, parent, false)
         return when (viewType) {
-            R.layout.item -> ItemViewHolder.Default(itemView)
-            R.layout.featured_item -> ItemViewHolder.Featured(itemView)
+            R.layout.item -> ItemViewHolder.Default(itemView, onLikeClick)
+            R.layout.featured_item -> ItemViewHolder.Featured(itemView, onLikeClick)
             else -> error("Unknown view type: $viewType")
         }
     }
@@ -47,15 +47,33 @@ sealed class ItemViewHolder(
 ) : RecyclerView.ViewHolder(containerView), LayoutContainer {
     abstract fun bind(item: Item)
 
-    class Default(containerView: View) : ItemViewHolder(containerView) {
+    class Default(
+        containerView: View,
+        onLikeClick: (Item) -> Unit
+    ) : ItemViewHolder(containerView) {
+        lateinit var item: Item
+        init {
+            likeButton.setOnClickListener { onLikeClick(item) }
+        }
+
         override fun bind(item: Item) {
+            this.item = item
             primaryText.text = item.primaryText
             secondaryText.text = item.secondaryText
         }
     }
 
-    class Featured(containerView: View) : ItemViewHolder(containerView) {
+    class Featured(
+        containerView: View,
+        onLikeClick: (Item) -> Unit
+    ) : ItemViewHolder(containerView) {
+        lateinit var item: Item
+        init {
+            likeButton.setOnClickListener { onLikeClick(item) }
+        }
+
         override fun bind(item: Item) {
+            this.item = item
             primaryText.text = item.primaryText
             secondaryText.text = item.secondaryText
         }

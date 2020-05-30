@@ -2,6 +2,7 @@ package com.example.androidworkshop3.ui.main
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
@@ -12,7 +13,7 @@ import kotlinx.android.synthetic.main.main_fragment.*
 class MainFragment : Fragment(R.layout.main_fragment) {
 
     private val viewModel: MainViewModel by viewModels()
-    private val itemAdapter = ItemAdapter()
+    private val itemAdapter = ItemAdapter(::onLikeClick)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -30,6 +31,10 @@ class MainFragment : Fragment(R.layout.main_fragment) {
     override fun onDestroyView() {
         itemsRecyclerView.adapter = null
         super.onDestroyView()
+    }
+
+    private fun onLikeClick(item: Item) {
+        Toast.makeText(context, "Like: ${item.id}", Toast.LENGTH_SHORT).show()
     }
 
     companion object {

@@ -60,6 +60,7 @@
             app:constraint_referenced_ids="isFeaturedImageView,secondaryText" />
 
         <Button
+            android:id="@+id/likeButton"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
