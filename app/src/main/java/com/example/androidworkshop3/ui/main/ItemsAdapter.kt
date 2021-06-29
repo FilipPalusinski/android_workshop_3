@@ -16,12 +16,19 @@ class ItemsAdapter: RecyclerView.Adapter<ItemViewHolder>() {
             notifyDataSetChanged()
         }
 
+    override fun getItemViewType(position: Int): Int {
+        return if(items[position].isFeatured) R.layout.featured_item else R.layout.default_item
+    }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.default_item, parent, false)
-        return ItemViewHolder(itemView)
+            .inflate(viewType, parent, false)
+        return when(viewType) {
+            R.layout.default_item -> ItemViewHolder.Default(itemView)
+            R.layout.featured_item -> ItemViewHolder.Featured(itemView)
+            else -> error("$viewType is not supported")
+        }
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
@@ -31,10 +38,21 @@ class ItemsAdapter: RecyclerView.Adapter<ItemViewHolder>() {
     override fun getItemCount()  = items.size
 }
 
-class ItemViewHolder(override val containerView: View): RecyclerView.ViewHolder(containerView), LayoutContainer {
-    fun bind(item: Item) {
-        primaryText.text = item.primaryText
-        secondaryText.text = item.secondaryText
+sealed class ItemViewHolder(override val containerView: View): RecyclerView.ViewHolder(containerView), LayoutContainer {
+   abstract fun bind(item: Item)
 
+
+
+    class Default(containerView: View): ItemViewHolder(containerView){
+        override fun bind(item: Item) {
+            primaryText.text = item.primaryText
+            secondaryText.text = item.secondaryText
+        }
+    }
+    class Featured(containerView: View): ItemViewHolder(containerView){
+        override fun bind(item: Item) {
+            primaryText.text = item.primaryText
+            secondaryText.text = item.secondaryText
+        }
     }
 }
